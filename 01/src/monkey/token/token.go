@@ -45,13 +45,11 @@ var keywords = map[string]TokenType{
 	"if":     IF,
 	"else":   ELSE,
 	"return": RETURN,
-	"==":     EQ,
-	"!=":     NOT_EQ,
 }
 
 func LookupIdent(ident string) TokenType {
 	if tok, ok := keywords[ident]; ok {
-		return tokx
+		return tok
 	}
 	return IDENT
 }

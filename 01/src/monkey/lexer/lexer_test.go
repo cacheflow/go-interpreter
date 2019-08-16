@@ -20,7 +20,7 @@ func TestNextToken(t *testing.T) {
 			return false;
 		}
 
-		10 === 10;
+		10 == 10;
 		10 != 9;
 		`
 
@@ -100,6 +100,7 @@ func TestNextToken(t *testing.T) {
 		{token.INT, "10"},
 		{token.NOT_EQ, "!="},
 		{token.INT, "9"},
+		{token.SEMICOLON, ";"},
 		{token.EOF, ""},
 	}
 
@@ -107,8 +108,6 @@ func TestNextToken(t *testing.T) {
 
 	for i, tt := range tests {
 		tok := l.NextToken()
-		// fmt.Printf("\nLEX current token type %v\n", tok.Type)
-		// fmt.Printf("\nLEX expected token type %v\n", tt.expectedType)
 		if tok.Type != tt.expectedType {
 			t.Fatalf("tests[%d] - tokentype wrong. expected=%q, got=%q",
 				i, tt.expectedType, tok.Type)
