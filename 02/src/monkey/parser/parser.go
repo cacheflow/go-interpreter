@@ -15,7 +15,24 @@ type Parser struct {
 	peekToken token.Token
 
 	errors []string
+
+	prefixParseFns map[token.TokenType]prefixParseFn
+
+	infixParseFns map[token.TokenType]infixParseFn
 }
+
+func (p *Parser) registerPrefix(tokenType token.TokenType, fn prefixParseFn) {
+	p.prefixParseFns[tokenType] = fn
+}
+
+func (p *Parser) registerInfix(tokenType token.TokenType, fn infixParseFn) {
+	p.infixParseFns[tokenType] = fn
+}
+
+type (
+	prefixParseFn func() ast.Expression
+	infixParseFn func(ast.Expression) ast.Expression
+)
 
 func New(l *lexer.Lexer) *Parser {
 
@@ -69,6 +86,9 @@ func (p *Parser) parseStatement() ast.Statement {
 	case token.LET:
 		return p.parseLetStatemnt()
 
+	case token.RETURN:
+		return p.parseReturnStatement()
+
 	default:
 		return nil
 	}
@@ -111,4 +131,17 @@ func (p *Parser) expectPeek(t token.TokenType) bool {
 		p.peekError(t)
 		return false
 	}
+}
+
+func (p *Parser) parseReturnStatement() *ast.ReturnStatement {
+
+	stmt := &ast.ReturnStatement{Token: p.curToken}
+
+	p.nextToken()
+
+	for !p.curTokenIs(token.SEMICOLON) {
+		p.nextToken()
+	}
+
+	return stmt
 }
