@@ -139,7 +139,7 @@ func TestIdentifierExpression(t *testing.T) {
 		ident, ok := stmt.Expression.(*ast.Identifier)
 
 		if ident.Value != "foobar" {
-			t.Errorf("ident.Value not %s. got=%s", "foobar", ident.Value)
+			t.Errorf("ident.Value not %s. got=%s", "foobar", ident.Value	)
 		}
 
 		if ident.TokenLiteral() != "foobar" {
@@ -147,3 +147,5 @@ func TestIdentifierExpression(t *testing.T) {
 		}
 	}
 }
+
+func TestIntegerLiteralExpression(t *Testing.T) {}
